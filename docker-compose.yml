@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  web:
+    image: web
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: posto
+    volumes:
+      - ".:/usr/src/app"
+    ports:
+      - 5001:5000
+    environment:
+      - FLASK_DEBUG=1
+      - PYTHONUNBUFFERED=0
