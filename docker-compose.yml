@@ -10,7 +10,7 @@ services:
     volumes:
       - ".:/usr/src/app"
     ports:
-      - 5001:5000
+      - 8001:8001
     environment:
       - FLASK_DEBUG=1
       - PYTHONUNBUFFERED=0

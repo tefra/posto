@@ -1,0 +1,49 @@
+{
+	"info": {
+		"_postman_id": "b7984926-fbfb-4bfc-88e6-f6e68d0563b7",
+		"name": "Posto",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Home",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Error Handler",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001"
+				}
+			},
+			"response": []
+		}
+	]
+}

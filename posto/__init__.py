@@ -9,8 +9,9 @@ def create_app() -> Flask:
     app.config.from_object(get_config())
 
     from posto import webhook
+    from posto import main
 
+    app.register_blueprint(main.blueprint)
     app.register_blueprint(webhook.blueprint, url_prefix="/webhook")
-    app.add_url_rule("/", endpoint="index")
 
     return app
