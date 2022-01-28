@@ -10,6 +10,10 @@ class Config:
     # Settings applicable to all environments
     SECRET_KEY = os.getenv("SECRET_KEY", default="A very terrible secret key.")
 
+    # You might want to update these in production
+    GITLAB_SECRET = "supersecret"
+    GITHUB_SECRET = "supersecret"
+
 
 class DevelopmentConfig(Config):
     FLASK_ENV = "dev"
