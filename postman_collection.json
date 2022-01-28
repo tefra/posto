@@ -22,10 +22,86 @@
 			"response": []
 		},
 		{
-			"name": "Webhook",
+			"name": "Webhook Gitlab",
 			"request": {
-				"method": "GET",
-				"header": []
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Gitlab-Token",
+						"value": "supersecret",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"object_kind\": \"issue\",\n    \"event_type\": \"issue\",\n    \"user\": {\n        \"id\": 10337992,\n        \"name\": \"Christodoulos Tsoulloftas\",\n        \"username\": \"tefra\",\n        \"avatar_url\": \"https://gitlab.com/uploads/-/system/user/avatar/10337992/avatar.png\",\n        \"email\": \"[REDACTED]\"\n    },\n    \"project\": {\n        \"id\": 33182093,\n        \"name\": \"Posto\",\n        \"description\": \"\",\n        \"web_url\": \"https://gitlab.com/tefra/posto\",\n        \"avatar_url\": null,\n        \"git_ssh_url\": \"git@gitlab.com:tefra/posto.git\",\n        \"git_http_url\": \"https://gitlab.com/tefra/posto.git\",\n        \"namespace\": \"Christodoulos Tsoulloftas\",\n        \"visibility_level\": 0,\n        \"path_with_namespace\": \"tefra/posto\",\n        \"default_branch\": \"main\",\n        \"ci_config_path\": \"\",\n        \"homepage\": \"https://gitlab.com/tefra/posto\",\n        \"url\": \"git@gitlab.com:tefra/posto.git\",\n        \"ssh_url\": \"git@gitlab.com:tefra/posto.git\",\n        \"http_url\": \"https://gitlab.com/tefra/posto.git\"\n    },\n    \"object_attributes\": {\n        \"author_id\": 10337992,\n        \"closed_at\": null,\n        \"confidential\": false,\n        \"created_at\": \"2022-01-27T09:45:18.084Z\",\n        \"description\": \"\",\n        \"discussion_locked\": null,\n        \"due_date\": null,\n        \"id\": 101365735,\n        \"iid\": 1,\n        \"last_edited_at\": null,\n        \"last_edited_by_id\": null,\n        \"milestone_id\": null,\n        \"moved_to_id\": null,\n        \"duplicated_to_id\": null,\n        \"project_id\": 33182093,\n        \"relative_position\": 513,\n        \"state_id\": 1,\n        \"time_estimate\": 0,\n        \"title\": \"Test Webhook\",\n        \"updated_at\": \"2022-01-27T09:45:18.084Z\",\n        \"updated_by_id\": null,\n        \"weight\": null,\n        \"url\": \"https://gitlab.com/tefra/posto/-/issues/1\",\n        \"total_time_spent\": 0,\n        \"time_change\": 0,\n        \"human_total_time_spent\": null,\n        \"human_time_change\": null,\n        \"human_time_estimate\": null,\n        \"assignee_ids\": [],\n        \"assignee_id\": null,\n        \"labels\": [],\n        \"state\": \"opened\",\n        \"severity\": \"unknown\"\n    },\n    \"labels\": [],\n    \"changes\": {},\n    \"repository\": {\n        \"name\": \"Posto\",\n        \"url\": \"git@gitlab.com:tefra/posto.git\",\n        \"description\": \"\",\n        \"homepage\": \"https://gitlab.com/tefra/posto\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/webhook/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"webhook",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Webhook Github",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"postman.setEnvironmentVariable(\"hmac\", CryptoJS.HmacSHA1(request.data, 'supersecret').toString(CryptoJS.digest));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "ntlm"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Hub-Signature",
+						"value": "sha1={{hmac}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"action\": \"created\",\n    \"issue\": {\n        \"url\": \"https://api.github.com/repos/tefra/posto/issues/1\",\n        \"repository_url\": \"https://api.github.com/repos/tefra/posto\",\n        \"labels_url\": \"https://api.github.com/repos/tefra/posto/issues/1/labels{/name}\",\n        \"comments_url\": \"https://api.github.com/repos/tefra/posto/issues/1/comments\",\n        \"events_url\": \"https://api.github.com/repos/tefra/posto/issues/1/events\",\n        \"html_url\": \"https://github.com/tefra/posto/issues/1\",\n        \"id\": 1115983404,\n        \"node_id\": \"I_kwDOGvPRt85ChI4s\",\n        \"number\": 1,\n        \"title\": \"Let's test the webhook\",\n        \"user\": {\n            \"login\": \"tefra\",\n            \"id\": 2098915,\n            \"node_id\": \"MDQ6VXNlcjIwOTg5MTU=\",\n            \"avatar_url\": \"https://avatars.githubusercontent.com/u/2098915?v=4\",\n            \"gravatar_id\": \"\",\n            \"url\": \"https://api.github.com/users/tefra\",\n            \"html_url\": \"https://github.com/tefra\",\n            \"followers_url\": \"https://api.github.com/users/tefra/followers\",\n            \"following_url\": \"https://api.github.com/users/tefra/following{/other_user}\",\n            \"gists_url\": \"https://api.github.com/users/tefra/gists{/gist_id}\",\n            \"starred_url\": \"https://api.github.com/users/tefra/starred{/owner}{/repo}\",\n            \"subscriptions_url\": \"https://api.github.com/users/tefra/subscriptions\",\n            \"organizations_url\": \"https://api.github.com/users/tefra/orgs\",\n            \"repos_url\": \"https://api.github.com/users/tefra/repos\",\n            \"events_url\": \"https://api.github.com/users/tefra/events{/privacy}\",\n            \"received_events_url\": \"https://api.github.com/users/tefra/received_events\",\n            \"type\": \"User\",\n            \"site_admin\": false\n        },\n        \"labels\": [],\n        \"state\": \"open\",\n        \"locked\": false,\n        \"assignee\": null,\n        \"assignees\": [],\n        \"milestone\": null,\n        \"comments\": 2,\n        \"created_at\": \"2022-01-27T09:37:28Z\",\n        \"updated_at\": \"2022-01-27T09:40:50Z\",\n        \"closed_at\": null,\n        \"author_association\": \"OWNER\",\n        \"active_lock_reason\": null,\n        \"body\": null,\n        \"reactions\": {\n            \"url\": \"https://api.github.com/repos/tefra/posto/issues/1/reactions\",\n            \"total_count\": 0,\n            \"+1\": 0,\n            \"-1\": 0,\n            \"laugh\": 0,\n            \"hooray\": 0,\n            \"confused\": 0,\n            \"heart\": 0,\n            \"rocket\": 0,\n            \"eyes\": 0\n        },\n        \"timeline_url\": \"https://api.github.com/repos/tefra/posto/issues/1/timeline\",\n        \"performed_via_github_app\": null\n    },\n    \"comment\": {\n        \"url\": \"https://api.github.com/repos/tefra/posto/issues/comments/1023020835\",\n        \"html_url\": \"https://github.com/tefra/posto/issues/1#issuecomment-1023020835\",\n        \"issue_url\": \"https://api.github.com/repos/tefra/posto/issues/1\",\n        \"id\": 1023020835,\n        \"node_id\": \"IC_kwDOGvPRt848-g8j\",\n        \"user\": {\n            \"login\": \"tefra\",\n            \"id\": 2098915,\n            \"node_id\": \"MDQ6VXNlcjIwOTg5MTU=\",\n            \"avatar_url\": \"https://avatars.githubusercontent.com/u/2098915?v=4\",\n            \"gravatar_id\": \"\",\n            \"url\": \"https://api.github.com/users/tefra\",\n            \"html_url\": \"https://github.com/tefra\",\n            \"followers_url\": \"https://api.github.com/users/tefra/followers\",\n            \"following_url\": \"https://api.github.com/users/tefra/following{/other_user}\",\n            \"gists_url\": \"https://api.github.com/users/tefra/gists{/gist_id}\",\n            \"starred_url\": \"https://api.github.com/users/tefra/starred{/owner}{/repo}\",\n            \"subscriptions_url\": \"https://api.github.com/users/tefra/subscriptions\",\n            \"organizations_url\": \"https://api.github.com/users/tefra/orgs\",\n            \"repos_url\": \"https://api.github.com/users/tefra/repos\",\n            \"events_url\": \"https://api.github.com/users/tefra/events{/privacy}\",\n            \"received_events_url\": \"https://api.github.com/users/tefra/received_events\",\n            \"type\": \"User\",\n            \"site_admin\": false\n        },\n        \"created_at\": \"2022-01-27T09:40:50Z\",\n        \"updated_at\": \"2022-01-27T09:40:50Z\",\n        \"author_association\": \"OWNER\",\n        \"body\": \"another\",\n        \"reactions\": {\n            \"url\": \"https://api.github.com/repos/tefra/posto/issues/comments/1023020835/reactions\",\n            \"total_count\": 0,\n            \"+1\": 0,\n            \"-1\": 0,\n            \"laugh\": 0,\n            \"hooray\": 0,\n            \"confused\": 0,\n            \"heart\": 0,\n            \"rocket\": 0,\n            \"eyes\": 0\n        },\n        \"performed_via_github_app\": null\n    },\n    \"repository\": {\n        \"id\": 452186551,\n        \"node_id\": \"R_kgDOGvPRtw\",\n        \"name\": \"posto\",\n        \"full_name\": \"tefra/posto\",\n        \"private\": false,\n        \"owner\": {\n            \"login\": \"tefra\",\n            \"id\": 2098915,\n            \"node_id\": \"MDQ6VXNlcjIwOTg5MTU=\",\n            \"avatar_url\": \"https://avatars.githubusercontent.com/u/2098915?v=4\",\n            \"gravatar_id\": \"\",\n            \"url\": \"https://api.github.com/users/tefra\",\n            \"html_url\": \"https://github.com/tefra\",\n            \"followers_url\": \"https://api.github.com/users/tefra/followers\",\n            \"following_url\": \"https://api.github.com/users/tefra/following{/other_user}\",\n            \"gists_url\": \"https://api.github.com/users/tefra/gists{/gist_id}\",\n            \"starred_url\": \"https://api.github.com/users/tefra/starred{/owner}{/repo}\",\n            \"subscriptions_url\": \"https://api.github.com/users/tefra/subscriptions\",\n            \"organizations_url\": \"https://api.github.com/users/tefra/orgs\",\n            \"repos_url\": \"https://api.github.com/users/tefra/repos\",\n            \"events_url\": \"https://api.github.com/users/tefra/events{/privacy}\",\n            \"received_events_url\": \"https://api.github.com/users/tefra/received_events\",\n            \"type\": \"User\",\n            \"site_admin\": false\n        },\n        \"html_url\": \"https://github.com/tefra/posto\",\n        \"description\": null,\n        \"fork\": false,\n        \"url\": \"https://api.github.com/repos/tefra/posto\",\n        \"forks_url\": \"https://api.github.com/repos/tefra/posto/forks\",\n        \"keys_url\": \"https://api.github.com/repos/tefra/posto/keys{/key_id}\",\n        \"collaborators_url\": \"https://api.github.com/repos/tefra/posto/collaborators{/collaborator}\",\n        \"teams_url\": \"https://api.github.com/repos/tefra/posto/teams\",\n        \"hooks_url\": \"https://api.github.com/repos/tefra/posto/hooks\",\n        \"issue_events_url\": \"https://api.github.com/repos/tefra/posto/issues/events{/number}\",\n        \"events_url\": \"https://api.github.com/repos/tefra/posto/events\",\n        \"assignees_url\": \"https://api.github.com/repos/tefra/posto/assignees{/user}\",\n        \"branches_url\": \"https://api.github.com/repos/tefra/posto/branches{/branch}\",\n        \"tags_url\": \"https://api.github.com/repos/tefra/posto/tags\",\n        \"blobs_url\": \"https://api.github.com/repos/tefra/posto/git/blobs{/sha}\",\n        \"git_tags_url\": \"https://api.github.com/repos/tefra/posto/git/tags{/sha}\",\n        \"git_refs_url\": \"https://api.github.com/repos/tefra/posto/git/refs{/sha}\",\n        \"trees_url\": \"https://api.github.com/repos/tefra/posto/git/trees{/sha}\",\n        \"statuses_url\": \"https://api.github.com/repos/tefra/posto/statuses/{sha}\",\n        \"languages_url\": \"https://api.github.com/repos/tefra/posto/languages\",\n        \"stargazers_url\": \"https://api.github.com/repos/tefra/posto/stargazers\",\n        \"contributors_url\": \"https://api.github.com/repos/tefra/posto/contributors\",\n        \"subscribers_url\": \"https://api.github.com/repos/tefra/posto/subscribers\",\n        \"subscription_url\": \"https://api.github.com/repos/tefra/posto/subscription\",\n        \"commits_url\": \"https://api.github.com/repos/tefra/posto/commits{/sha}\",\n        \"git_commits_url\": \"https://api.github.com/repos/tefra/posto/git/commits{/sha}\",\n        \"comments_url\": \"https://api.github.com/repos/tefra/posto/comments{/number}\",\n        \"issue_comment_url\": \"https://api.github.com/repos/tefra/posto/issues/comments{/number}\",\n        \"contents_url\": \"https://api.github.com/repos/tefra/posto/contents/{+path}\",\n        \"compare_url\": \"https://api.github.com/repos/tefra/posto/compare/{base}...{head}\",\n        \"merges_url\": \"https://api.github.com/repos/tefra/posto/merges\",\n        \"archive_url\": \"https://api.github.com/repos/tefra/posto/{archive_format}{/ref}\",\n        \"downloads_url\": \"https://api.github.com/repos/tefra/posto/downloads\",\n        \"issues_url\": \"https://api.github.com/repos/tefra/posto/issues{/number}\",\n        \"pulls_url\": \"https://api.github.com/repos/tefra/posto/pulls{/number}\",\n        \"milestones_url\": \"https://api.github.com/repos/tefra/posto/milestones{/number}\",\n        \"notifications_url\": \"https://api.github.com/repos/tefra/posto/notifications{?since,all,participating}\",\n        \"labels_url\": \"https://api.github.com/repos/tefra/posto/labels{/name}\",\n        \"releases_url\": \"https://api.github.com/repos/tefra/posto/releases{/id}\",\n        \"deployments_url\": \"https://api.github.com/repos/tefra/posto/deployments\",\n        \"created_at\": \"2022-01-26T07:53:32Z\",\n        \"updated_at\": \"2022-01-27T08:06:53Z\",\n        \"pushed_at\": \"2022-01-27T08:54:37Z\",\n        \"git_url\": \"git://github.com/tefra/posto.git\",\n        \"ssh_url\": \"git@github.com:tefra/posto.git\",\n        \"clone_url\": \"https://github.com/tefra/posto.git\",\n        \"svn_url\": \"https://github.com/tefra/posto\",\n        \"homepage\": null,\n        \"size\": 7,\n        \"stargazers_count\": 0,\n        \"watchers_count\": 0,\n        \"language\": \"Python\",\n        \"has_issues\": true,\n        \"has_projects\": true,\n        \"has_downloads\": true,\n        \"has_wiki\": true,\n        \"has_pages\": false,\n        \"forks_count\": 0,\n        \"mirror_url\": null,\n        \"archived\": false,\n        \"disabled\": false,\n        \"open_issues_count\": 1,\n        \"license\": {\n            \"key\": \"mit\",\n            \"name\": \"MIT License\",\n            \"spdx_id\": \"MIT\",\n            \"url\": \"https://api.github.com/licenses/mit\",\n            \"node_id\": \"MDc6TGljZW5zZTEz\"\n        },\n        \"allow_forking\": true,\n        \"is_template\": false,\n        \"topics\": [],\n        \"visibility\": \"public\",\n        \"forks\": 0,\n        \"open_issues\": 1,\n        \"watchers\": 0,\n        \"default_branch\": \"main\"\n    },\n    \"sender\": {\n        \"login\": \"tefra\",\n        \"id\": 2098915,\n        \"node_id\": \"MDQ6VXNlcjIwOTg5MTU=\",\n        \"avatar_url\": \"https://avatars.githubusercontent.com/u/2098915?v=4\",\n        \"gravatar_id\": \"\",\n        \"url\": \"https://api.github.com/users/tefra\",\n        \"html_url\": \"https://github.com/tefra\",\n        \"followers_url\": \"https://api.github.com/users/tefra/followers\",\n        \"following_url\": \"https://api.github.com/users/tefra/following{/other_user}\",\n        \"gists_url\": \"https://api.github.com/users/tefra/gists{/gist_id}\",\n        \"starred_url\": \"https://api.github.com/users/tefra/starred{/owner}{/repo}\",\n        \"subscriptions_url\": \"https://api.github.com/users/tefra/subscriptions\",\n        \"organizations_url\": \"https://api.github.com/users/tefra/orgs\",\n        \"repos_url\": \"https://api.github.com/users/tefra/repos\",\n        \"events_url\": \"https://api.github.com/users/tefra/events{/privacy}\",\n        \"received_events_url\": \"https://api.github.com/users/tefra/received_events\",\n        \"type\": \"User\",\n        \"site_admin\": false\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8001/webhook/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8001",
+					"path": [
+						"webhook",
+						""
+					]
+				}
 			},
 			"response": []
 		},

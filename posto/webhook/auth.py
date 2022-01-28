@@ -10,7 +10,7 @@ from flask import request
 from werkzeug.exceptions import ServiceUnavailable
 
 
-def parse_header_token() -> Callable:
+def authorize_source() -> Callable:
     """Detect the source from the headers and authenticate by the config
     secret."""
 
@@ -33,9 +33,9 @@ def parse_header_token() -> Callable:
 
 def authorize_gitlab() -> Optional[str]:
     """
-    Gilab auth token is a raw string, since its webhooks only support ssl.
+    Check gitlab header token is correct and return the source name.
 
-    :return:
+    The token is raw because gitlab only allows for ssl endpoints.
     """
     source = "gitlab"
     if get_secret(source) == request.headers["X-Gitlab-Token"]:
@@ -45,7 +45,13 @@ def authorize_gitlab() -> Optional[str]:
 
 
 def authorize_github() -> Optional[str]:
-    # Get the signature from the payload
+    """
+    Verify github signature matches our secret with the payload and return the
+    source name.
+
+    Github uses HMAC signature verification, encode the payload with the
+    secret
+    """
 
     source = "github"
     secret = get_secret(source)
@@ -64,6 +70,7 @@ def authorize_github() -> Optional[str]:
 
 
 def get_secret(source: str) -> str:
+    """Get the secret key from config by the source or raise an exception."""
     secret = current_app.config.get(f"{source.upper()}_SECRET", None)
 
     if secret is None:

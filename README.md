@@ -59,3 +59,10 @@ change it if you are running the app through pycharm or any other ide add the fo
 ```console
 --port=8001
 ```
+
+
+# Running tests
+
+```console
+$ pytest tests/
+```

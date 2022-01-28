@@ -13,7 +13,11 @@ blueprint = Blueprint("main", __name__)
 
 @blueprint.route("/")
 def index() -> Dict:
-    return {"status": f"I am posto: {__version__}"}
+    return {
+        "code": 200,
+        "status": "OK",
+        "description": f"I am posto: {__version__}",
+    }
 
 
 @blueprint.app_errorhandler(HTTPException)
@@ -26,7 +30,7 @@ def handle_exception(e: HTTPException) -> Response:
     response.data = json.dumps(
         {
             "code": e.code,
-            "name": e.name,
+            "status": e.name,
             "description": e.description,
         }
     )

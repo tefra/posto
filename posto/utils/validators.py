@@ -6,7 +6,7 @@ from flask import abort
 from flask import request
 
 
-def json_required() -> Callable:
+def require_json() -> Callable:
     """Check if the request content-type is json otherwise abort."""
 
     def decorator(fn: Callable) -> Callable:
