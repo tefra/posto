@@ -10,4 +10,6 @@ RUN pip install .
 
 EXPOSE 5000
 
+COPY . .
+
 CMD ["make", "start"]

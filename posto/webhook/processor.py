@@ -15,7 +15,7 @@ class Record(NamedTuple):
     repo: str
     event: str
     source: str
-    timestamp: str = datetime.datetime.now().isoformat()
+    timestamp: str
 
 
 class Mapper(abc.ABC):

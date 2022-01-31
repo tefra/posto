@@ -1,19 +1,6 @@
 version: "3"
 
 services:
-  web:
-    image: web
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: posto
-    volumes:
-      - ".:/usr/src/app"
-    ports:
-      - 8001:8001
-    environment:
-      - FLASK_DEBUG=1
-      - PYTHONUNBUFFERED=0
   elasticsearch:
     image: elasticsearch:7.16.3
     container_name: elasticsearch
@@ -33,6 +20,22 @@ services:
     image: kibana:7.16.3
     container_name: kibana
     environment:
-      - ELASTICSEARCH_HOSTS=["http://elasticsearch:9200"]
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     ports:
       - 5601:5601
+  posto:
+    image: posto
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: posto
+    volumes:
+      - ".:/usr/src/app"
+    ports:
+      - 8001:8001
+    environment:
+      - FLASK_DEBUG=1
+      - PYTHONUNBUFFERED=0
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch

@@ -1,6 +1,6 @@
 # posto
 
-Post something, I will store it somewhere for sure!.
+Post something, I will send it somewhere for sure!
 
 # Clone Repo
 
@@ -56,6 +56,9 @@ $ make start
 ```
 
 # Verify installation
+
+The first start of elastic search is slow, give it  a few minutes to setup everything before you
+start testing things, you might also need to start everything up twice the first time.
 
 After you start the app in any way visit http://localhost:8001 you should get a welcome message.
 

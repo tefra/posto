@@ -1,4 +1,6 @@
 import os
+from typing import Any
+from typing import Dict
 from typing import Type
 
 
@@ -44,9 +46,11 @@ class DevelopmentConfig(Config):
 
     # https://elasticsearch-py.readthedocs.io/en/v7.16.3/api.html#elasticsearch
     # All params except the adapter will pass as keyword arguments to the client
-    ANALYTICS = {
+    ANALYTICS: Dict[str, Any] = {
         "adapter": "posto.analytics.adapters.ElasticSearchAdapter",
-        "hosts": "http://localhost:9200",
+        "hosts": os.environ.get("ELASTICSEARCH_HOSTS", "http://localhost:9200").split(
+            ","
+        )
         # http_auth = (“username”, “password”)
         # api_key=(“api_key_id”, “api_key_secret”)
     }
