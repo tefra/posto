@@ -1,7 +1,10 @@
 import json
+import logging
 from typing import Dict
+from typing import Tuple
 
 from flask import Blueprint
+from flask import current_app
 from flask import Response
 from werkzeug.exceptions import HTTPException
 
@@ -36,3 +39,20 @@ def handle_exception(e: HTTPException) -> Response:
     )
     response.content_type = "application/json"
     return response
+
+
+@blueprint.app_errorhandler(Exception)
+def handle_unhandled_exception(e: Exception) -> Tuple[Dict, int]:
+    """Return JSON instead of HTML for HTTP errors."""
+
+    # start with the correct headers and status code from the error
+
+    logging.error(e)
+
+    return {
+        "code": 500,
+        "status": "Internal Server Error",
+        "description": repr(e)
+        if current_app.debug
+        else "Something's broken, something's broken, it's your fault!",
+    }, 500

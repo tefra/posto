@@ -4,8 +4,10 @@ from typing import Dict
 from flask import Blueprint
 from flask import request
 
+from posto import analytics
 from posto.utils import validators
 from posto.webhook import auth
+from posto.webhook.processor import EventProcessor
 
 blueprint = Blueprint("webhook", __name__)
 
@@ -14,7 +16,8 @@ blueprint = Blueprint("webhook", __name__)
 @validators.require_json()
 @auth.authorize_source()
 def post(*args: Any, source: str, **kwargs: Any) -> Dict:
-    request.json  # We will store this...
+    processor = EventProcessor("webhooks", analytics)
+    processor.ingest(source, dict(request.headers), request.json)
 
     return {
         "code": 200,

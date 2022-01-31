@@ -8,16 +8,18 @@ from elasticsearch import Elasticsearch
 
 
 class BaseAdapter(abc.ABC):
-    """Abstract mapper class."""
+    """Abstract analytics adapter class."""
 
     __slots__ = ()
 
     @abc.abstractmethod
-    def emit(self, namespace: str, document: Dict):
+    def emit(self, index: str, document: Dict):
         """"""
 
 
 class LogAdapter(BaseAdapter):
+    """Log adapter to emit events to the StdOut."""
+
     __slots__ = "engine"
 
     def __init__(self, **kwargs: Any):
@@ -29,6 +31,7 @@ class LogAdapter(BaseAdapter):
 
 
 class ElasticSearchAdapter(BaseAdapter):
+    """Elastic search adapter to emit events to a specific index."""
 
     __slots__ = "engine"
 

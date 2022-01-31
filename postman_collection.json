@@ -79,6 +79,11 @@
 						"key": "X-Hub-Signature",
 						"value": "sha1={{hmac}}",
 						"type": "text"
+					},
+					{
+						"key": "X-Github-Event",
+						"value": "issue_comment",
+						"type": "text"
 					}
 				],
 				"body": {

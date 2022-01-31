@@ -18,7 +18,11 @@ def authorize_source() -> Callable:
         @functools.wraps(fn)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             source = next(
-                (fn for name, fc in __PARSERS__.items() if name in request.headers),
+                (
+                    authorize_func()
+                    for name, authorize_func in __PARSERS__.items()
+                    if name in request.headers
+                ),
                 None,
             )
 
